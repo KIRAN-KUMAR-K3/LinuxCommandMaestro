@@ -1,3 +1,5 @@
+import tkinter as tk
+from tkinter import messagebox
 import random
 
 class LinuxCommandGame:
@@ -20,30 +22,47 @@ class LinuxCommandGame:
             'kill': 'Terminate or signal processes',
         }
 
+        self.window = tk.Tk()
+        self.window.title("Linux Command Game")
+
+        self.description_label = tk.Label(self.window, text="Welcome to the Linux Command Game!\nGuess the Linux command based on its description.")
+        self.description_label.pack(pady=10)
+
+        self.guess_entry = tk.Entry(self.window, width=30)
+        self.guess_entry.pack(pady=10)
+
+        self.submit_button = tk.Button(self.window, text="Submit Guess", command=self.check_guess)
+        self.submit_button.pack(pady=10)
+
+        self.quit_button = tk.Button(self.window, text="Quit Game", command=self.quit_game)
+        self.quit_button.pack(pady=10)
+
+        self.play_game()
+
     def get_random_command(self):
         return random.choice(list(self.commands.keys()))
 
     def play_game(self):
-        print("Welcome to the Linux Command Game!")
-        print("Guess the Linux command based on its description.")
-        print("Type 'exit' to quit the game.\n")
+        self.current_command = self.get_random_command()
+        self.description_label.config(text=f"Description: {self.commands[self.current_command]}")
 
-        while True:
-            command = self.get_random_command()
-            description = self.commands[command]
+    def check_guess(self):
+        user_guess = self.guess_entry.get().strip().lower()
 
-            print(f"Description: {description}")
-            user_guess = input("Your guess: ").strip().lower()
+        if user_guess == 'exit':
+            self.quit_game()
 
-            if user_guess == 'exit':
-                print("Thanks for playing! Exiting the game.")
-                break
+        if user_guess == self.current_command:
+            messagebox.showinfo("Correct", "Congratulations! Your guess is correct.")
+        else:
+            messagebox.showerror("Incorrect", f"Oops! The correct command is '{self.current_command}'.")
 
-            if user_guess == command:
-                print("Correct!\n")
-            else:
-                print(f"Incorrect. The correct command is '{command}'.\n")
+        self.play_game()
+        self.guess_entry.delete(0, tk.END)
+
+    def quit_game(self):
+        self.window.destroy()
 
 if __name__ == "__main__":
     game = LinuxCommandGame()
-    game.play_game()
+    game.window.mainloop()
