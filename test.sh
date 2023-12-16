@@ -2,17 +2,29 @@
 
 commands=("ls" "pwd" "cd" "cp" "mv" "rm" "mkdir" "rmdir" "cat" "echo" "grep" "chmod" "man" "ps" "kill")
 
-function print_styled_message() {
-    local message="$1"
-    echo -e "\e[1;34m$message\e[0m"
+function print_header() {
+    echo -e "\e[1;34m============================================\e[0m"
+    echo -e "\e[1;34m        Linux Command Guessing Game\e[0m"
+    echo -e "\e[1;34m============================================\e[0m"
+}
+
+function print_description() {
+    local command="$1"
+    echo -e "\nDescription: \e[1;33m${descriptions[$command]}\e[0m"
+}
+
+function print_feedback() {
+    local feedback_color="$1"
+    local feedback_message="$2"
+    echo -e "\n\e[${feedback_color}m${feedback_message}\e[0m"
 }
 
 function play_game() {
     current_command=${commands[$((RANDOM % ${#commands[@]}))]}
 
-    print_styled_message "Welcome to the Linux Command Game!"
-    echo -e "\nGuess the Linux command based on its description:\n"
-    echo -e "Description: \e[1;33m${descriptions[$current_command]}\e[0m"
+    print_header
+    echo -e "\nGuess the Linux command based on its description:"
+    print_description "$current_command"
     
     read -p "Your guess: " user_guess
 
@@ -21,16 +33,18 @@ function play_game() {
     fi
 
     if [[ "$user_guess" == "$current_command" ]]; then
-        echo -e "\n\e[1;32mCongratulations! Your guess is correct.\e[0m"
+        print_feedback "1;32" "Congratulations! Your guess is correct."
     else
-        echo -e "\n\e[1;31mOops! The correct command is '$current_command'.\e[0m"
+        print_feedback "1;31" "Oops! The correct command is '$current_command'."
     fi
 
     play_game
 }
 
 function quit_game() {
-    print_styled_message "Exiting the Linux Command Game. Goodbye!"
+    print_header
+    print_feedback "1;34" "Exiting the Linux Command Game. Goodbye!"
+    echo -e "\e[1;34m============================================\e[0m"
     exit 0
 }
 
