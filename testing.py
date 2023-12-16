@@ -1,64 +1,75 @@
 import random
 
-# Dictionary of Linux commands and their descriptions
-linux_commands = {
-    'ls': 'List files and directories',
-    'pwd': 'Print working directory',
-    'cd': 'Change directory',
-    'mkdir': 'Create a directory',
-    'touch': 'Create an empty file',
-    'cp': 'Copy files or directories',
-    'mv': 'Move or rename files or directories',
-    'rm': 'Remove files or directories',
-    'cat': 'Concatenate and display the content of files',
-    'grep': 'Search for a pattern in files',
-    'ps': 'Display information about running processes',
-    'chmod': 'Change file permissions',
-    'df': 'Display disk space usage',
-    'tar': 'Archive files',
-    'find': 'Search for files and directories',
+commands = ["ls", "pwd", "cd", "cp", "mv", "rm", "mkdir", "rmdir", "cat", "echo", "grep", "chmod", "man", "ps", "kill"]
+
+descriptions = {
+    "ls": "List directory contents",
+    "pwd": "Print working directory",
+    "cd": "Change directory",
+    "cp": "Copy files or directories",
+    "mv": "Move or rename files or directories",
+    "rm": "Remove files or directories",
+    "mkdir": "Create a directory",
+    "rmdir": "Remove an empty directory",
+    "cat": "Concatenate and display the content of files",
+    "echo": "Display a message or variable",
+    "grep": "Search for a pattern in a file",
+    "chmod": "Change file permissions",
+    "man": "Display manual pages for a command",
+    "ps": "List information about running processes",
+    "kill": "Terminate or signal processes",
 }
 
-def ask_question():
-    # Ask a random question about a Linux command
-    correct_command = random.choice(list(linux_commands.keys()))
-    correct_position = random.randint(1, 4)
-    
-    choices = [linux_commands[correct_command]]
-    while len(choices) < 4:
-        random_command = random.choice(list(linux_commands.values()))
-        if random_command not in choices:
-            choices.append(random_command)
-    
-    random.shuffle(choices)
+def print_header():
+    print("=" * 44)
+    print("        Linux Command MCQ Quiz")
+    print("=" * 44)
+
+def print_question(correct_command):
+    correct_description = descriptions[correct_command]
+
+    # Generate three random commands excluding the correct one
+    options = random.sample([cmd for cmd in commands if cmd != correct_command], 3)
+    options.append(correct_command)
+
+    # Shuffle the options randomly
+    random.shuffle(options)
 
     print(f"\nWhat does the command '{correct_command}' do?\n")
+    for i, option in enumerate(options, start=1):
+        print(f"  {i}. {descriptions[option]}")
 
-    for i, choice in enumerate(choices, start=1):
-        print(f"{i}. {choice}")
+    return options.index(correct_command) + 1
+
+def play_game():
+    current_command = random.choice(commands)
+
+    print_header()
+    correct_position = print_question(current_command)
+
+    user_choice = input("Your choice (1-4): ").strip()
+
+    if user_choice.lower() == 'exit':
+        quit_game()
 
     try:
-        user_answer = int(input("Your choice (1-4): ").strip())
+        user_choice = int(user_choice)
     except ValueError:
         print("Invalid input. Please enter a number between 1 and 4.")
-        return False
+        return
 
-    if user_answer == 0:
-        print("Exiting the quiz. Goodbye!")
-        return True
-
-    if user_answer == correct_position:
-        print("Correct! Well done!\n")
+    if user_choice == correct_position:
+        print("\nCongratulations! Your answer is correct.")
     else:
-        print(f"Incorrect. The correct answer is: {correct_position}. {linux_commands[correct_command]}\n")
+        print(f"\nOops! That's incorrect. The correct answer is option {correct_position}.")
 
-    return False
+    play_game()
+
+def quit_game():
+    print_header()
+    print("\nExiting the Linux Command MCQ Quiz. Goodbye!")
+    print("=" * 44)
+    exit(0)
 
 if __name__ == "__main__":
-    print("Welcome to the Linux Command Quiz!")
-    print("Guess the Linux command based on its description.")
-    print("Enter the number corresponding to your choice.")
-    print("Enter '0' to exit the quiz.\n")
-
-    while not ask_question():
-        pass
+    play_game()
