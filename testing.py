@@ -22,14 +22,15 @@ linux_commands = {
 def ask_question():
     # Ask a random question about a Linux command
     correct_command = random.choice(list(linux_commands.keys()))
-    correct_position = random.randint(1, 4)
-    
+
+    # Generate choices with correct command
     choices = [linux_commands[correct_command]]
     while len(choices) < 4:
         random_command = random.choice(list(linux_commands.values()))
         if random_command not in choices:
             choices.append(random_command)
-    
+
+    # Shuffle choices
     random.shuffle(choices)
 
     print(f"\nWhat does the command '{correct_command}' do?\n")
@@ -46,6 +47,9 @@ def ask_question():
     if user_answer == 0:
         print("Exiting the quiz. Goodbye!")
         return True
+
+    # Find the index of the correct command in the shuffled choices
+    correct_position = choices.index(linux_commands[correct_command]) + 1
 
     if user_answer == correct_position:
         print("Correct! Well done!\n")
