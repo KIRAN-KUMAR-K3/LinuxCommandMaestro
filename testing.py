@@ -47,10 +47,14 @@ def ask_question():
         print("Exiting the quiz. Goodbye!")
         return True
 
-    if user_answer == correct_position:
-        print("Correct! Well done!\n")
-    else:
-        print(f"Incorrect. The correct answer is: {correct_position}. {linux_commands[correct_command]}\n")
+    switch = {
+        1: "Correct! Well done!\n",
+        2: f"Incorrect. The correct answer is: {correct_position}. {linux_commands[correct_command]}\n",
+        3: f"Incorrect. The correct answer is: {correct_position}. {linux_commands[correct_command]}\n",
+        4: f"Incorrect. The correct answer is: {correct_position}. {linux_commands[correct_command]}\n",
+    }
+
+    print(switch.get(user_answer, "Invalid choice. Please enter a number between 1 and 4.\n"))
 
     return False
 
