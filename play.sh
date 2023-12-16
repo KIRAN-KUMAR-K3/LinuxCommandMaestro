@@ -35,7 +35,7 @@ function play_game() {
     if [[ "$user_guess" == "$current_command" ]]; then
         print_feedback "1;32" "Congratulations! Your guess is correct."
     else
-        print_feedback "1;31" "Oops! The correct command is '$current_command'."
+        print_feedback "1;31" "Oops! The correct command is '\e[1;37m$current_command\e[0m'."
     fi
 
     play_game
