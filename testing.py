@@ -1,4 +1,5 @@
 import random
+from colorama import Fore, Style
 
 commands = ["ls", "pwd", "cd", "cp", "mv", "rm", "mkdir", "rmdir", "cat", "echo", "grep", "chmod", "man", "ps", "kill"]
 
@@ -21,9 +22,9 @@ descriptions = {
 }
 
 def print_header():
-    print("=" * 44)
+    print(Fore.CYAN + "=" * 44)
     print("        Linux Command MCQ Quiz")
-    print("=" * 44)
+    print("=" * 44 + Style.RESET_ALL)
 
 def print_question(correct_command):
     correct_description = descriptions[correct_command]
@@ -37,7 +38,7 @@ def print_question(correct_command):
 
     print(f"\nWhat does the command '{correct_command}' do?\n")
     for i, option in enumerate(options, start=1):
-        print(f"  {i}. {descriptions[option]}")
+        print(f"  {i}. {Fore.GREEN}{descriptions[option]}{Style.RESET_ALL}")
 
     return options.index(correct_command) + 1
 
@@ -59,16 +60,16 @@ def play_game():
         return
 
     if user_choice == correct_position:
-        print("\nCongratulations! Your answer is correct.")
+        print("\n" + Fore.GREEN + "Congratulations! Your answer is correct." + Style.RESET_ALL)
     else:
-        print(f"\nOops! That's incorrect. The correct answer is option {correct_position}.")
+        print(f"\n{Fore.RED}Oops! That's incorrect. The correct answer is option {correct_position}.{Style.RESET_ALL}")
 
     play_game()
 
 def quit_game():
     print_header()
-    print("\nExiting the Linux Command MCQ Quiz. Goodbye!")
-    print("=" * 44)
+    print("\n" + Fore.CYAN + "Exiting the Linux Command MCQ Quiz. Goodbye!" + Style.RESET_ALL)
+    print(Fore.CYAN + "=" * 44 + Style.RESET_ALL)
     exit(0)
 
 if __name__ == "__main__":
